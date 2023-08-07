@@ -1,8 +1,12 @@
 package jpabook.jpashop.domain.item;
 
 import jakarta.persistence.*;
+import jpabook.jpashop.domain.Category;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // 상속 관계 매핑이기 때문에 전략을 부모 클래스에 지정해야함 (여기서는 한 테이블에 모두 넣으므로 single table)
@@ -20,4 +24,6 @@ public abstract class Item {
 
     // Album, Book, Movie -> 상속 관계 매핑
 
+    @ManyToMany(mappedBy = "items")
+    private List<Category> categories = new ArrayList<>();
 }
