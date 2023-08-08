@@ -28,10 +28,17 @@ public class Category {
     private List<Item> items = new ArrayList<>();
 
     // 같은 엔티티에 대해서 셀프로 양방향 연관 관계를 가지게함
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Category parent;
 
     @OneToMany(mappedBy = "parent")
     private List<Category> child = new ArrayList<>();
+
+    //=== 연관 관계 편의 메서드 ===//
+    // 양방향일 때 원자적으로 한 코드로 해결함
+    public void addChildCategory(Category child) {
+        this.child.add(child);
+        child.setParent(this);
+    }
 }

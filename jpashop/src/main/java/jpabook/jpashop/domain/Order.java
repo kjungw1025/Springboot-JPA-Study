@@ -17,14 +17,14 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id") // 매핑을 어떤 걸로 한 것인지 (foreign key의 이름이 member_id로 됨)
     private Member member;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     // 하나의 주문은 하나의 배송 정보만 가져야 하고, 하나의 배송은 하나의 주문배송 정보만 가져야함 -> 일대일 관계 성립
     @JoinColumn(name = "delivery_id")
     // FK가 있는 Order를 연관 관계의 주인으로 설정
@@ -35,4 +35,22 @@ public class Order {
     @Enumerated(EnumType.STRING)
     // 반드시 enum 타입 사용할 때 STRING으로 하기, ORDINAL은 중간에 다른 상태가 생기면 숫자가 밀려서 DB 조회시 오류 뜸
     private OrderStatus status; // 주문 상태 [ORDER, CANCEL]
+
+    //=== 연관 관계 편의 메서드 ===//
+    // 양방향일 때 원자적으로 한 코드로 해결함
+    public void setMember(Member member) {
+        this.member = member;
+        member.getOrders().add(this);
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+        delivery.setOrder(this);
+    }
+
 }
