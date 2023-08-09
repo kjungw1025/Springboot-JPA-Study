@@ -19,16 +19,22 @@ public class MemberRepository {
     
     public Member findOne(Long id) {
         return em.find(Member.class, id);
-    }
+    }   // (타입, pk)
 
     public List<Member> findAll() {
         // em.createQuery -> JPQL 작성
-        List<Member> result = em.createQuery("select m from Member m", Member.class)
-                .getResultList();
+        List<Member> result = em.createQuery("select m from Member m", Member.class)    // (jpql 쿼리, 반환 타입)
+                .getResultList(); // member들을 list로 만들어줌
         // Ctrl + Alt + N으로 코드 줄이기
         // return em.createQuery("select m from Member m", Member.class)
         //        .getResultList();
-        return result; 
+        return result;
+
+        /*
+            JPQL과 SQL 쿼리는 결국은 JPQL이 SQL로 번역되어야 하기 때문에 거의 똑같으나, 약간은 다름.
+            차이 : SQL은 테이블을 대상으로 하는데, JPQL은 Entity 객체를 대상으로 쿼리를 함
+            SQL : select * from Member, JPQL : select m from Member m
+         */
     }
 
     public List<Member> findByName(String name) {
