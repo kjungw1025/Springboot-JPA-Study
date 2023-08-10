@@ -2,6 +2,7 @@ package jpabook.jpashop.service;
 
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import java.util.List;
 @Service
 // 여기에 @Transactional 쓰고, 아래 findMembers()와 findOne()위에 @Transactional(readOnly = true)로 작성해도 됨
 // 또는, 읽기 전용 트랜잭션이 더 많으니 여기에 @Transactional(readOnly = true)를 쓰고 join() 위에 @Transactional 써도 됨
+@RequiredArgsConstructor
 public class MemberService {
 
     // 필드 인젝션
@@ -31,12 +33,12 @@ public class MemberService {
 
     // 생성자(Constructor) 인젝션 (가장 선호) -> "여기서 한단계 더 나아가면 @RequiredArgsConstructor 사용함 : final이 있는 필드만 가지고 생성자를 만들어줌"
     // Ctrl + Shitf + A -> Constructor 검색 -> (생성자 인젝션)
-    @Autowired
-    public MemberService(MemberRepository memberRepository) {
-        // 한번 생성할 때 완성이 되기 때문에, 중간에 set해서 변경할 수 없음
-        // 테스트 케이스를 작성할 때 Mock()이나 여러가지 주입을 직접 해줘야함
-        this.memberRepository = memberRepository;
-    }
+//    @Autowired
+//    public MemberService(MemberRepository memberRepository) {
+//        // 한번 생성할 때 완성이 되기 때문에, 중간에 set해서 변경할 수 없음
+//        // 테스트 케이스를 작성할 때 Mock()이나 여러가지 주입을 직접 해줘야함
+//        this.memberRepository = memberRepository;
+//    }
 
     /**
      * 회원 가입
