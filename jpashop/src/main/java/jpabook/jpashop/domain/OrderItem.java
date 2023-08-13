@@ -2,12 +2,15 @@ package jpabook.jpashop.domain;
 
 import jakarta.persistence.*;
 import jpabook.jpashop.domain.item.Item;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "order_item")
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // createOrderItem을 쓰지 않고, 생성자를 만들어서 해당 값들 초기화 못하게 제약조건 주기
 public class OrderItem {
     @Id @GeneratedValue
     @Column(name = "order_item_id")
@@ -24,6 +27,10 @@ public class OrderItem {
 
     private int orderPrice; // 주문 가격
     private int count;  // 주문 수량
+
+//    protected OrderItem() {
+//        // OrderSerivce에서 생성자를 통해 만들지 못하게 제약
+//    }
 
     //=== 생성 메서드 ===//
     public static OrderItem createOrderItem(Item item, int orderPrice, int count) {

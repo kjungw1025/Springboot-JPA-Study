@@ -1,7 +1,9 @@
 package jpabook.jpashop.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "orders") // @Table을 통해 테이블명을 orders로 변경, orderby 때문에 order는 오류 발생할 수 있기 때문
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // createOrderItem을 쓰지 않고, 생성자를 만들어서 해당 값들 초기화 못하게 제약조건 주기
 public class Order {
 
     @Id @GeneratedValue
@@ -23,12 +26,14 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
+    // cascade : Order를 persist하면, List<OrderItem>에 들어있는 item들도 다 persist를 날려줌
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     // 하나의 주문은 하나의 배송 정보만 가져야 하고, 하나의 배송은 하나의 주문배송 정보만 가져야함 -> 일대일 관계 성립
     @JoinColumn(name = "delivery_id")
     // FK가 있는 Order를 연관 관계의 주인으로 설정
     private Delivery delivery;
+    // cascade : Order를 persist하면, 위의 delivery entity도 같이 persist 해줌
 
     private LocalDateTime orderDate;    // 주문 시간
 
