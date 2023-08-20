@@ -37,7 +37,7 @@ public class OrderRepository {
     /**
      * JPQL로 처리하는 동적 쿼리 (번거롭고, 실수로 인한 버그가 발생할 수 있어 잘 안씀 -> MyBatis를 통해 이와 같은 동적 쿼리 문제를 해소할 수 있음)
      */
-    public List<Order> finAllUseJpql(OrderSearch orderSearch) {
+    public List<Order> findAllByString(OrderSearch orderSearch) {
         String jpql = "select o From Order o join o.member m";
         boolean isFirstCondition = true;
 
