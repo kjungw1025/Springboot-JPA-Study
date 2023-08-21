@@ -7,7 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
 
-@Repository // Repsotiroy 어노테이션을 사용하면, 컴포넌트 스캔에 의해서 자동으로 스프링 빈으로 관리가 됨
+@Repository // Repsoiroy 어노테이션을 사용하면, 컴포넌트 스캔에 의해서 자동으로 스프링 빈으로 관리가 됨
 public class MemberRepository {
 
     @PersistenceContext // JPA가 제공하는 표준 어노테이션
