@@ -11,6 +11,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
@@ -42,5 +44,18 @@ public class MemberController {
 
         memberService.join(member);
         return "redirect:/";    // /주소로 넘어감
+    }
+
+    // 등록할 때(create)는 폼 객체를 썼는데, 뿌릴 때(List<Member>)는 Member Entity 그대로 출력하고 있음
+    // 단순하게 Member 안 Entity들을 손댈게 없는 상황 이므로, 그대로 출력하는 형태로 썻지만, 실무에서는 DTO로 변환해서 화면에 꼭 필요한 데이터들만 가지고 출력하는 걸 권장
+    // API를 만들 때는 이유를 불문하고 Entity를 외부로 반환해서는 안됨
+    //      1. 코드가 그대로 노출될 수 있음 (패스워드)
+    //      2. API 스펙이 변해버림 (Entity에 로직을 추가했는데, 그거 때문에 스펙이 변해서 불안전 스펙이 되버림)
+    @GetMapping("/members")
+    public String list(Model model) {
+        List<Member> members = memberService.findMembers();
+        model.addAttribute("members", members);
+//        model.addAttribute("members", memberService.findMembers());
+        return "members/memberList";
     }
 }
