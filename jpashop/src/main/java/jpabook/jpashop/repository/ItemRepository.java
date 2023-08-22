@@ -18,6 +18,7 @@ public class ItemRepository {
         }
         else {
             em.merge(item); // 업데이트와 비슷
+            // 상품 수정시 기존 id가 존재하므로 merge를 통해 업데이트 하고 있음
         }
     }
 
